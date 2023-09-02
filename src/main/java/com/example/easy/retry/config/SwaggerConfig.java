@@ -22,25 +22,27 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-            .select()
-            .apis(RequestHandlerSelectors.basePackage("com.example.easy.retry.controller")) // 替换为你的项目包名
-            .paths(PathSelectors.any())
-            .build()
-            .apiInfo(apiInfo());
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.example.easy.retry.controller")) // 替换为你的项目包名
+                .paths(PathSelectors.any())
+                .build()
+                .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("Easy Retry Example")
-            .description(
-                    "<h1>EasyRetry是基于BASE思想实现的分布式服务重试组件</h1> \n" +
-                    "<h3>官网地址: https://www.easyretry.com/</h3>" +
-                    "<h3>在线体验地址: http://preview.easyretry.com/</h3> "+
-                    "<h3>源码地址: https://gitee.com/byteblogs168/easy-retry-demo</h3>" +
-                    "<h3>特别提醒: 🌻在您使用测试案例之前请认真的阅读官网.</h3>"
-            )
-            .version(EasyRetryVersion.getVersion())
-            .build();
+                .title("Easy Retry Example")
+                .description(
+                        "<h1>EasyRetry是致力提高分布式业务系统一致性的分布式重试平台</h1> \n" +
+                                "<h3>官网地址: https://www.easyretry.com/</h3>" +
+                                "<h3>在线体验地址: http://preview.easyretry.com/</h3> " +
+                                "<h3>源码地址: https://gitee.com/byteblogs168/easy-retry-demo</h3>" +
+                                "<h3>视频教程: 🌻https://www.ixigua.com/pseries/7272009348824433213/.</h3>" +
+                                "<h3>特别提醒: 🌻在您使用测试案例之前请认真的阅读官网.</h3>"
+
+                )
+                .version(EasyRetryVersion.getVersion())
+                .build();
     }
 }
 
