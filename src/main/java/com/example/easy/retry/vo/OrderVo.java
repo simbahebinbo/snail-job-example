@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderVo {
-    @ApiModelProperty(value = "订单ID,用于唯一标识订单的编号", required = true)
+    @Schema(description = "订单ID,用于唯一标识订单的编号", accessMode = Schema.AccessMode.READ_WRITE)
     private String orderId; // 订单ID,用于唯一标识订单的编号
-    @ApiModelProperty(value = "订单来源信息,1-手机端下单 2-PC端下单",required = true)
+    @Schema(description = "订单来源信息,1-手机端下单 2-PC端下单",accessMode = Schema.AccessMode.READ_WRITE)
     private Integer source; // 订单来源信息,1-手机端下单 2-PC端下单
 }
