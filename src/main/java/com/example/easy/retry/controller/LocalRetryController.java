@@ -64,7 +64,7 @@ public class LocalRetryController {
                     "下面参数可以指定:NullPointerException, ParamException"
     )
     public void localRetryIncludeException(@Parameter(name = "type", description = "异常类型", in = ParameterIn.QUERY,
-            schema = @Schema(type = "String", description = "异常类型")) @RequestParam("type") String type) {
+            schema = @Schema(type = "string", description = "异常类型")) @RequestParam("type") String type) {
         localRetryService.localRetryIncludeException(type);
     }
 

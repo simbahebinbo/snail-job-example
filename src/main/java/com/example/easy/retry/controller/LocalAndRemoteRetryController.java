@@ -34,7 +34,7 @@ public class LocalAndRemoteRetryController {
             "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
     public void remoteRetryWithLocalRemote(@Parameter(name = "params", description = "测试参数",
-            schema = @Schema(type = "String", description = "测试参数", defaultValue = "test")
+            schema = @Schema(type = "string", description = "测试参数", defaultValue = "test")
     )
     @RequestParam("params") String params) {
         localRemoteService.remoteRetryWithLocalRemote(params);

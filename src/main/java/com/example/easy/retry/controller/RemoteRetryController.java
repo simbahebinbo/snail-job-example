@@ -2,6 +2,7 @@ package com.example.easy.retry.controller;
 
 import java.util.Random;
 import java.util.UUID;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -42,6 +43,7 @@ public class RemoteRetryController {
 
     /**
      * 一个最简单的远程调用案例
+     * schema = @Schema(type = "String", defaultValue = "test", description = "测试参数", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
      */
     @GetMapping("/retry/sync")
     @Operation(
@@ -50,7 +52,7 @@ public class RemoteRetryController {
                     "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
     public void remoteSync(@Parameter(name = "params", description = "测试参数",
-            schema = @Schema(type = "String", defaultValue = "test", description = "测试参数"))
+            schema = @Schema(type = "string", defaultValue = "test", description = "测试参数"))
                            @RequestParam("params") String params) {
         remoteRetryService.remoteSync(params);
     }
@@ -86,7 +88,7 @@ public class RemoteRetryController {
     @GetMapping("/retryWithSingleParamIdempotentGenerate")
     public void retryWithSingleParamIdempotentGenerate(
             @Parameter(name = "params", description = "测试参数",
-                    schema = @Schema(type = "String", description = "测试参数", defaultValue = "test"))
+                    schema = @Schema(type = "string", description = "测试参数", defaultValue = "test"))
             @RequestParam("params") String params) {
         remoteRetryService.retryWithSingleParamIdempotentGenerate(params);
     }

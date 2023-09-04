@@ -26,7 +26,7 @@ public class ManualRetryExecutorController {
                     + "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
     @GetMapping("/retry")
-    public void remoteRetryWithCallback(@Parameter(name = "params", description = "测试参数", schema = @Schema(description = "测试参数", defaultValue = "test"))
+    public void remoteRetryWithCallback(@Parameter(name = "params", description = "测试参数", schema = @Schema(type = "string", description = "测试参数", defaultValue = "test"))
                                         @RequestParam("params") String params) {
         manualRetryExecutorMethodService.myExecutorMethod(params);
     }
