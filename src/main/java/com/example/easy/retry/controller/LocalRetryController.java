@@ -1,5 +1,6 @@
 package com.example.easy.retry.controller;
 
+import com.example.easy.retry.service.LocalRetryService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easy.retry.service.LocalRetryService;
+import com.example.easy.retry.service.impl.LocalRetryServiceImpl;
 
 @RestController
 @RequestMapping("/local")
@@ -25,6 +26,14 @@ public class LocalRetryController {
     )
     public void onlyLocalRetry(@ApiParam(name = "params", value = "测试参数", defaultValue = "test") @RequestParam("params") String params){
         localRetryService.localRetry(params);
+    }
+
+    @GetMapping("/localRetryWithAnnoOnInterface")
+    @ApiOperation(
+        value = "@Retryable在接口上执行重试"
+    )
+    public void localRetryWithAnnoOnInterface(@ApiParam(name = "params", value = "测试参数", defaultValue = "test") @RequestParam("params") String params){
+        localRetryService.localRetryWithAnnoOnInterface(params);
     }
 
     @GetMapping("/withBasicParams")
