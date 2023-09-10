@@ -1,2 +1,1 @@
 #com.aizuda.easy.retry.client.core.serializer.HessianSerializer
-#com.aizuda.easy.retry.client.core.serializer.JacksonSerializer
