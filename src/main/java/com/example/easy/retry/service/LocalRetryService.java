@@ -2,6 +2,7 @@ package com.example.easy.retry.service;
 
 import com.aizuda.easy.retry.client.core.annotation.Retryable;
 import com.aizuda.easy.retry.client.core.retryer.RetryType;
+import com.example.easy.retry.vo.OrderVo;
 
 /**
  * @author:  www.byteblogs.com
@@ -22,5 +23,6 @@ public interface LocalRetryService {
 
     void localRetryIsThrowException(String params);
 
+    boolean localRetryWithRetryMethod(OrderVo orderVo);
 
 }

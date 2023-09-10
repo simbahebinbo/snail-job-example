@@ -1,12 +1,10 @@
 package com.example.easy.retry.controller;
 
 import com.example.easy.retry.service.LocalRetryService;
+import com.example.easy.retry.vo.OrderVo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.easy.retry.service.impl.LocalRetryServiceImpl;
 
@@ -91,5 +89,17 @@ public class LocalRetryController {
     })
     public void localRetryIsThrowException(@RequestParam("params") String params){
         localRetryService.localRetryIsThrowException(params);
+    }
+
+    @PostMapping("/localRetryWithRetryMethod")
+    /**
+     * 使用自定义的异常处理类 OrderRetryMethod
+     */
+    @ApiOperation(
+            value = "指定自定义的异常处理类",
+            notes ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+    )
+    public boolean localRetryWithRetryMethod(@RequestBody OrderVo orderVo){
+       return localRetryService.localRetryWithRetryMethod(orderVo);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.easy.retry.service.impl;
 
 import com.aizuda.easy.retry.client.core.retryer.RetryType;
+import com.example.easy.retry.customized.OrderRetryMethod;
 import com.example.easy.retry.service.LocalRetryService;
+import com.example.easy.retry.vo.OrderVo;
 import org.springframework.stereotype.Component;
 
 import com.aizuda.easy.retry.client.core.annotation.Retryable;
@@ -9,7 +11,6 @@ import com.example.easy.retry.exception.ParamException;
 
 /**
  * easy-retry中的本地重试demo
- * 测试类入口见 {@link com.example.easy.retry.local.RetryableTest}
  */
 
 @Component
@@ -93,4 +94,12 @@ public class LocalRetryServiceImpl implements LocalRetryService {
         System.out.println("local retry is throw exception 方法开始执行");
         throw new ParamException("此处发生了参数异常");
     }
+
+    @Override
+    @Retryable(scene = "localRetryWithRetryMethod", retryStrategy = RetryType.ONLY_LOCAL,
+            retryMethod = OrderRetryMethod.class)
+    public boolean localRetryWithRetryMethod(OrderVo orderVo) {
+        throw new NullPointerException();
+    }
+
 }
