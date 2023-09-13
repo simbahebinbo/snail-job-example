@@ -21,7 +21,7 @@ public interface RemoteRetryService {
 
     boolean remoteRetryWithRetryMethod(OrderVo orderVo);
 
-    boolean remoteRetryWithCompleteCallback(OrderVo orderVo);
+    boolean remoteRetryWithCompleteCallback(String scene, OrderVo orderVo);
 
     boolean remoteRetryWithBizNo(OrderVo orderVo);
 }

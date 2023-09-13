@@ -3,6 +3,9 @@ package com.example.easy.retry.service.impl;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import cn.hutool.core.lang.Assert;
+import com.aizuda.easy.retry.client.core.intercepter.RetrySiteSnapshot;
+import com.aizuda.easy.retry.common.core.enums.RetryStatusEnum;
 import com.example.easy.retry.service.RemoteRetryService;
 import org.springframework.stereotype.Component;
 
@@ -81,28 +84,33 @@ public class RemoteRetryServiceImpl implements RemoteRetryService {
     }
 
     /**
-     * 使用自定义的retryCompleteCallback类 OrderCompleteCallback
-     */
-    @Retryable(scene = "remoteRetryWithCompleteCallback", retryStrategy = RetryType.LOCAL_REMOTE,
-        retryCompleteCallback = OrderCompleteCallback.class)
-    public boolean remoteRetryWithCompleteCallback(OrderVo orderVo) {
-        Random random = new Random();
-        // 生成一个随机数，范围为0到1之间
-        double probability = random.nextDouble();
-        // 判断随机数是否小于等于0.5，即50%的概率
-        if (probability <= 0.5) {
-            // 生成的结果在50%的概率下执行这里的逻辑
-            throw new NullPointerException();
-        }
-        return true;
-    }
-
-    /**
      * 自定义BizNo
      */
     @Retryable(scene = "remoteRetryWithBizNo", retryStrategy = RetryType.ONLY_REMOTE, bizNo = "#orderVo.orderId")
     public boolean remoteRetryWithBizNo(OrderVo orderVo) {
         throw new NullPointerException();
+    }
+
+    /**
+     * 使用自定义的retryCompleteCallback类 OrderCompleteCallback
+     */
+    @Retryable(scene = "remoteRetryWithCompleteCallback", retryStrategy = RetryType.ONLY_REMOTE,
+            retryCompleteCallback = OrderCompleteCallback.class)
+    public boolean remoteRetryWithCompleteCallback(String scene, OrderVo orderVo) {
+
+        Assert.notNull(RetrySiteSnapshot.getStage(), ()->new IllegalArgumentException("测试回调"));
+
+        // 本地重试阶段，执行失败，远程的执行成功
+        if (RetrySiteSnapshot.getStage().equals(RetrySiteSnapshot.EnumStage.LOCAL.getStage())) {
+            // 生成的结果在50%的概率下执行这里的逻辑
+            throw new NullPointerException();
+        }
+
+        if (scene.equals(RetryStatusEnum.MAX_COUNT.name())) {
+            throw new NullPointerException();
+        }
+
+        return true;
     }
 
 

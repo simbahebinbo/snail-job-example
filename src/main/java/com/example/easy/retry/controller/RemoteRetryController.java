@@ -8,12 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.easy.retry.vo.OrderVo;
 import com.example.easy.retry.service.impl.RemoteRetryServiceImpl;
@@ -142,9 +137,10 @@ public class RemoteRetryController {
                 +
                 "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
-    @PostMapping("/retryWithCallback")
-    public void remoteRetryWithCallback(@RequestBody OrderVo orderVo) {
-        remoteRetryServiceImpl.remoteRetryWithCompleteCallback(orderVo);
+    @PostMapping("/retryWithCallback/{scene}")
+    public void remoteRetryWithCallback(@ApiParam(name = "scene", value = "场景 FINISH/MAX_COUNT", defaultValue = "FINISH")
+                                            @PathVariable("scene") String scene, @RequestBody OrderVo orderVo) {
+        remoteRetryServiceImpl.remoteRetryWithCompleteCallback(scene, orderVo);
     }
 
     /**
