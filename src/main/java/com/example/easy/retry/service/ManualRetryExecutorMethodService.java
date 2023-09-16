@@ -6,4 +6,5 @@ package com.example.easy.retry.service;
  */
 public interface ManualRetryExecutorMethodService {
 
+    void myExecutorMethod(String params);
 }

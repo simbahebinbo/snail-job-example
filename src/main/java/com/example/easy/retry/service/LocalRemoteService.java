@@ -6,4 +6,7 @@ package com.example.easy.retry.service;
  */
 public interface LocalRemoteService {
 
+    void localRemote();
+
+    String remoteRetryWithLocalRemote(String requestId);
 }

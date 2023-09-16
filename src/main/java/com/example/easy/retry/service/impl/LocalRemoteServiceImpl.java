@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class LocalRemoteServiceImpl implements LocalRemoteService {
 
+    @Override
     @Retryable(scene = "localRemote", retryStrategy = RetryType.LOCAL_REMOTE)
     public void localRemote() {
         System.out.println("local retry 方法开始执行");
@@ -27,6 +28,7 @@ public class LocalRemoteServiceImpl implements LocalRemoteService {
      * 使用先本地再远程的策略同步上传重试请求 retryStrategy = LOCAL_REMOTE 代表本地重试3次后再执行远程上报 async = false 代表使用同步上传的方式 timeout = 1 代表超时时间为1
      * unit = MINUTES 代表超时时间的单位是分钟
      */
+    @Override
     @Retryable(scene = "remoteRetryWithSync", retryStrategy = RetryType.LOCAL_REMOTE,
         async = false, timeout = 1, unit = TimeUnit.MINUTES)
     public String remoteRetryWithLocalRemote(String requestId) {

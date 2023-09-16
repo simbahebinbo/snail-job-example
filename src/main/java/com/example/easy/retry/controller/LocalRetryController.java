@@ -1,5 +1,6 @@
 package com.example.easy.retry.controller;
 
+import com.example.easy.retry.vo.OrderVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,10 +37,13 @@ public class LocalRetryController {
     }
 
     @GetMapping("/localRetryWithAnnoOnInterface")
-    @ApiOperation(
-        value = "@Retryable在接口上执行重试"
+    @Operation(
+        summary = "@Retryable在接口上执行重试"
     )
-    public void localRetryWithAnnoOnInterface(@ApiParam(name = "params", value = "测试参数", defaultValue = "test") @RequestParam("params") String params){
+    public void localRetryWithAnnoOnInterface(
+        @Parameter(name = "params", description = "测试参数", in = ParameterIn.QUERY,
+            schema = @Schema(type = "string", description = "测试参数"))
+            @RequestParam("params") String params) {
         localRetryService.localRetryWithAnnoOnInterface(params);
     }
 
@@ -98,9 +104,9 @@ public class LocalRetryController {
     /**
      * 使用自定义的异常处理类 OrderRetryMethod
      */
-    @ApiOperation(
-            value = "指定自定义的异常处理类",
-            notes ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+    @Operation(
+            description = "指定自定义的异常处理类",
+            summary ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
     )
     public boolean localRetryWithRetryMethod(@RequestBody OrderVo orderVo){
        return localRetryService.localRetryWithRetryMethod(orderVo);
