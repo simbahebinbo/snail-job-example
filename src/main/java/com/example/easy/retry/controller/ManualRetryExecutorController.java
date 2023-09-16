@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.easy.retry.service.ManualRetryExecutorMethodService;
+import com.example.easy.retry.service.impl.ManualRetryExecutorMethodServiceImpl;
 
 @RestController
 @RequestMapping("/manual")
@@ -17,7 +17,7 @@ import com.example.easy.retry.service.ManualRetryExecutorMethodService;
 public class ManualRetryExecutorController {
 
     @Autowired
-    private ManualRetryExecutorMethodService manualRetryExecutorMethodService;
+    private ManualRetryExecutorMethodServiceImpl manualRetryExecutorMethodServiceImpl;
     @ApiOperation(
         value = "手动重试",
         notes = "❤️如果不知道这个手动重试的使用场景可以参考: https://www.easyretry.com/pages/406a68/#%E5%8F%91%E9%80%81mq%E5%9C%BA%E6%99%AF \n"
@@ -25,6 +25,6 @@ public class ManualRetryExecutorController {
     )
     @GetMapping("/retry")
     public void remoteRetryWithCallback(@ApiParam(name = "params", value = "测试参数", defaultValue = "test") @RequestParam("params") String params){
-        manualRetryExecutorMethodService.myExecutorMethod(params);
+        manualRetryExecutorMethodServiceImpl.myExecutorMethod(params);
     }
 }

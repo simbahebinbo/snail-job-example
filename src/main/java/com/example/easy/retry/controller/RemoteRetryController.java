@@ -8,15 +8,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.easy.retry.vo.OrderVo;
-import com.example.easy.retry.service.RemoteRetryService;
+import com.example.easy.retry.service.impl.RemoteRetryServiceImpl;
 
 @RestController
 @RequestMapping("/remote")
@@ -24,7 +19,7 @@ import com.example.easy.retry.service.RemoteRetryService;
 public class RemoteRetryController {
 
     @Autowired
-    private RemoteRetryService remoteRetryService;
+    private RemoteRetryServiceImpl remoteRetryServiceImpl;
 
     /**
      * 一个最简单的远程调用案例
@@ -37,7 +32,7 @@ public class RemoteRetryController {
     )
     public void remote(@ApiParam(name = "params", value = "测试参数", defaultValue = "test")
     @RequestParam("params") String params) {
-        remoteRetryService.remoteRetry(params);
+        remoteRetryServiceImpl.remoteRetry(params);
     }
 
     /**
@@ -51,7 +46,7 @@ public class RemoteRetryController {
     )
     public void remoteSync(@ApiParam(name = "params", value = "测试参数", defaultValue = "test")
                        @RequestParam("params") String params) {
-        remoteRetryService.remoteSync(params);
+        remoteRetryServiceImpl.remoteSync(params);
     }
 
     /**
@@ -67,7 +62,7 @@ public class RemoteRetryController {
                 "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
     public void remoteRetryWithIdempotentId(@RequestBody OrderVo orderVo) {
-        remoteRetryService.remoteRetryWithIdempotentId(orderVo);
+        remoteRetryServiceImpl.remoteRetryWithIdempotentId(orderVo);
     }
 
     /**
@@ -86,7 +81,7 @@ public class RemoteRetryController {
     public void retryWithSingleParamIdempotentGenerate(
         @ApiParam(name = "params", value = "测试参数", defaultValue = "test")
         @RequestParam("params") String params) {
-        remoteRetryService.retryWithSingleParamIdempotentGenerate(params);
+        remoteRetryServiceImpl.retryWithSingleParamIdempotentGenerate(params);
     }
 
     /**
@@ -104,7 +99,7 @@ public class RemoteRetryController {
     )
     public void retryWithMulParamIdempotentGenerate(@RequestBody OrderVo orderVo) {
         Random random = new Random();
-        remoteRetryService.retryWithMulParamIdempotentGenerate(
+        remoteRetryServiceImpl.retryWithMulParamIdempotentGenerate(
             String.valueOf(UUID.randomUUID()),
             random.nextInt(),
             random.nextDouble(),
@@ -127,7 +122,7 @@ public class RemoteRetryController {
     )
     @PostMapping("/retryWithRetryMethod")
     public void remoteRetryWithRetryMethod(@RequestBody OrderVo orderVo) {
-        remoteRetryService.remoteRetryWithRetryMethod(orderVo);
+        remoteRetryServiceImpl.remoteRetryWithRetryMethod(orderVo);
     }
 
     /**
@@ -142,9 +137,10 @@ public class RemoteRetryController {
                 +
                 "📢查看任务列表: http://preview.easyretry.com/#/retry-task/list"
     )
-    @PostMapping("/retryWithCallback")
-    public void remoteRetryWithCallback(@RequestBody OrderVo orderVo) {
-        remoteRetryService.remoteRetryWithCompleteCallback(orderVo);
+    @PostMapping("/retryWithCallback/{scene}")
+    public void remoteRetryWithCallback(@ApiParam(name = "scene", value = "场景 FINISH/MAX_COUNT", defaultValue = "FINISH")
+                                            @PathVariable("scene") String scene, @RequestBody OrderVo orderVo) {
+        remoteRetryServiceImpl.remoteRetryWithCompleteCallback(scene, orderVo);
     }
 
     /**
@@ -158,7 +154,7 @@ public class RemoteRetryController {
     )
     @PostMapping("/remoteRetryWithBizNo")
     public void remoteRetryWithBizNo(@RequestBody OrderVo orderVo) {
-        remoteRetryService.remoteRetryWithBizNo(orderVo);
+        remoteRetryServiceImpl.remoteRetryWithBizNo(orderVo);
     }
 
 
