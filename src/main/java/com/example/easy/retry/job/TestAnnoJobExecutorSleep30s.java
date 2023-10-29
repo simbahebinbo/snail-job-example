@@ -2,7 +2,6 @@ package com.example.easy.retry.job;
 
 import com.aizuda.easy.retry.client.job.core.annotation.JobExecutor;
 import com.aizuda.easy.retry.client.job.core.dto.JobArgs;
-import com.aizuda.easy.retry.client.job.core.dto.JobContext;
 import com.aizuda.easy.retry.client.model.ExecuteResult;
 import com.aizuda.easy.retry.common.core.util.JsonUtil;
 import org.springframework.stereotype.Component;
@@ -13,10 +12,16 @@ import org.springframework.stereotype.Component;
  * @since 2.4.0
  */
 @Component
-@JobExecutor(name = "testJobExecutor")
-public class TestAnnoJobExecutor {
+@JobExecutor(name = "testAnnoJobExecutorSleep30s")
+public class TestAnnoJobExecutorSleep30s {
 
     public ExecuteResult jobExecute(JobArgs jobArgs) {
+        System.out.println(JsonUtil.toJsonString(jobArgs));
+        try {
+            Thread.sleep(30 * 1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return ExecuteResult.success("测试成功");
     }
 }
