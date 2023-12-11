@@ -42,3 +42,4 @@ easy-retry:
   server:
     host: 127.0.0.1
     port: 1788
+  namespace: 764d604ec6fc45f68cd92514c40e9e1a
