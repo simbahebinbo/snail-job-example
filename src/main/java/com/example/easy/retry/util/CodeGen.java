@@ -10,14 +10,11 @@ import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 
 public class CodeGen {
 
-    @Value("${spring.datasource.url}")
-    private static String dataSourceUrl;
+    private static String dataSourceUrl = "jdbc:mysql://localhost:3306/easy_retry_260?useSSL=false&characterEncoding=utf8&useUnicode=true";
 
-    @Value("${spring.datasource.username}")
-    private static String userName;
+    private static String userName = "root";
 
-    @Value("${spring.datasource.password}")
-    private static String password;
+    private static String password= "root";
 
     public static void main(String[] args) {
         DataSourceConfig dataSourceConfig = new DataSourceConfig.Builder(dataSourceUrl, userName, password).build();
@@ -25,17 +22,17 @@ public class CodeGen {
         // 全局配置
         GlobalConfig globalConfig = new GlobalConfig.Builder()
                 .outputDir("src/main/java")
-                .author("maluxinyu")
+                .author("xiaowoniu")
                 .build();
 
         // 策略配置
         StrategyConfig strategyConfig = new StrategyConfig.Builder()
-                .addInclude("fail_order")  // 需要生成的表名
+                .addInclude("workflow")  // 需要生成的表名
                 .build();
 
         // 包配置
         PackageConfig packageConfig = new PackageConfig.Builder()
-                .parent("com.maluxinyu.easyretry")
+                .parent("com.aizuda.easy.retry.template.datasource.persistence.po")
                 .moduleName("easy-retry-springboot")
                 .build();
 
