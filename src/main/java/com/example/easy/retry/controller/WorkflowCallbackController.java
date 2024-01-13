@@ -1,9 +1,12 @@
 package com.example.easy.retry.controller;
 
+import com.aizuda.easy.retry.server.model.dto.CallbackParamsDTO;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author xiaowoniu
@@ -16,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class WorkflowCallbackController {
 
     @PostMapping
-    public void callback(@RequestBody Object object, @RequestHeader HttpHeaders headers) {
+    public void callback(@RequestBody List<CallbackParamsDTO> object, @RequestHeader HttpHeaders headers) {
         log.info("callback: {}, secret:{} secret:{}", object, "secret", headers.getFirst("secret"));
     }
 }

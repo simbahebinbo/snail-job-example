@@ -2,9 +2,7 @@ package com.example.easy.retry.job;
 
 import com.aizuda.easy.retry.client.job.core.annotation.JobExecutor;
 import com.aizuda.easy.retry.client.job.core.dto.JobArgs;
-import com.aizuda.easy.retry.client.job.core.dto.JobContext;
 import com.aizuda.easy.retry.client.model.ExecuteResult;
-import com.aizuda.easy.retry.common.core.util.JsonUtil;
 import org.springframework.stereotype.Component;
 
 /**
