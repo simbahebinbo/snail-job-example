@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
-MAINTAINER www.byteblogs.com
+MAINTAINER xiaowoniu
 
 ADD ./target/easy-retry-example.jar easy-retry-example.jar
 
