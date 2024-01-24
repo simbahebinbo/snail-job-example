@@ -20,7 +20,6 @@ public class TestWorkflowAnnoJobExecutor {
     public ExecuteResult jobExecute(JobArgs jobArgs) throws InterruptedException {
         for (int i = 0; i < 30; i++) {
             EasyRetryLog.REMOTE.info("任务执行开始. [{}]", i + "" + JsonUtil.toJsonString(jobArgs));
-            Thread.sleep(1000);
         }
         FailOrderPo failOrderPo = new FailOrderPo();
         failOrderPo.setOrderId("xiaowoniu");
