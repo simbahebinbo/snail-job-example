@@ -1,7 +1,6 @@
 package com.example.easy.retry.controller;
 
 import com.aizuda.easy.retry.server.model.dto.CallbackParamsDTO;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;

@@ -2,8 +2,10 @@ package com.example.easy.retry.service.impl;
 
 import com.aizuda.easy.retry.client.core.retryer.RetryType;
 import com.example.easy.retry.customized.OrderRetryMethod;
+import com.example.easy.retry.handler.RetryHandler;
 import com.example.easy.retry.service.LocalRetryService;
 import com.example.easy.retry.vo.OrderVo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.aizuda.easy.retry.client.core.annotation.Retryable;
@@ -15,6 +17,10 @@ import com.example.easy.retry.exception.ParamException;
 
 @Component
 public class LocalRetryServiceImpl implements LocalRetryService {
+
+    @Autowired
+    private RetryHandler retryHandler;
+
     /**
      * 入门案例
      * 我们仅仅需要指定场景值scene就可以给方法赋予重试逻辑
@@ -28,6 +34,13 @@ public class LocalRetryServiceImpl implements LocalRetryService {
     public void localRetry(String params) {
         System.out.println("local retry 方法开始执行");
         double i = 1 / 0;
+    }
+
+    @Override
+    public boolean localRetryWithTwoRetryMethod(final String params) {
+        retryHandler.retryMethod1(params);
+        retryHandler.retryMethod2(params);
+        return true;
     }
 
     @Override
@@ -100,6 +113,20 @@ public class LocalRetryServiceImpl implements LocalRetryService {
             retryMethod = OrderRetryMethod.class)
     public boolean localRetryWithRetryMethod(OrderVo orderVo) {
         throw new NullPointerException();
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithPropagationRequired", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithPropagationRequired(String params) {
+        retryHandler.localRetry(params);
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithPropagationRequiredNew", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithPropagationRequiredNew(final String params) {
+        retryHandler.localRetry(params);
+        return false;
     }
 
 }

@@ -111,4 +111,40 @@ public class LocalRetryController {
     public boolean localRetryWithRetryMethod(@RequestBody OrderVo orderVo){
        return localRetryService.localRetryWithRetryMethod(orderVo);
     }
+
+    @GetMapping("/localRetryWithTwoRetryMethod")
+    /**
+     * 使用自定义的异常处理类 OrderRetryMethod
+     */
+    @Operation(
+        description = "指定自定义的异常处理类",
+        summary ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+    )
+    public boolean localRetryWithTwoRetryMethod(@RequestParam("params") String params){
+        return localRetryService.localRetryWithTwoRetryMethod(params);
+    }
+
+    @GetMapping("/localRetryWithPropagationRequired")
+    /**
+     * 使用自定义的异常处理类 OrderRetryMethod
+     */
+    @Operation(
+        description = "指定自定义的异常处理类",
+        summary ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+    )
+    public boolean localRetryWithPropagationRequired(@RequestParam("params") String params){
+        return localRetryService.localRetryWithPropagationRequired(params);
+    }
+
+    @GetMapping("/localRetryWithPropagationRequiredNew")
+    /**
+     * 使用自定义的异常处理类 OrderRetryMethod
+     */
+    @Operation(
+        description = "指定自定义的异常处理类",
+        summary ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+    )
+    public boolean localRetryWithPropagationRequiredNew(@RequestParam("params") String params){
+        return localRetryService.localRetryWithPropagationRequiredNew(params);
+    }
 }

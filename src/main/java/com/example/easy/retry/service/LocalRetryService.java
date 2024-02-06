@@ -12,6 +12,8 @@ public interface LocalRetryService {
 
     void localRetry(String params);
 
+    boolean localRetryWithTwoRetryMethod(String params);
+
     @Retryable(scene = "localRetryWithAnnoOnInterface", retryStrategy = RetryType.ONLY_LOCAL)
     void localRetryWithAnnoOnInterface(String params);
 
@@ -24,5 +26,9 @@ public interface LocalRetryService {
     void localRetryIsThrowException(String params);
 
     boolean localRetryWithRetryMethod(OrderVo orderVo);
+
+    boolean localRetryWithPropagationRequired(String params);
+
+    boolean localRetryWithPropagationRequiredNew(String params);
 
 }
