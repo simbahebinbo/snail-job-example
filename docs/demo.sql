@@ -3,8 +3,7 @@ CREATE DATABASE demo;
 USE demo;
 
 CREATE TABLE fail_order
-(
-    `id`  bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+(`id`  bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
     `order_id` varchar(255) NOT NULL COMMENT '订单Id',
     `source_id` int NOT NULL COMMENT '来源Id',
     `scene_name` varchar(255) NOT NULL COMMENT '场景名称',

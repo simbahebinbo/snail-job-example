@@ -5,6 +5,7 @@ import com.example.easy.retry.customized.OrderRetryMethod;
 import com.example.easy.retry.handler.RetryHandler;
 import com.example.easy.retry.service.LocalRetryService;
 import com.example.easy.retry.vo.OrderVo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import com.example.easy.retry.exception.ParamException;
  */
 
 @Component
+@Slf4j
 public class LocalRetryServiceImpl implements LocalRetryService {
 
     @Autowired
@@ -125,7 +127,32 @@ public class LocalRetryServiceImpl implements LocalRetryService {
     @Override
     @Retryable(scene = "localRetryWithPropagationRequiredNew", retryStrategy = RetryType.ONLY_LOCAL)
     public boolean localRetryWithPropagationRequiredNew(final String params) {
-        retryHandler.localRetry(params);
+        retryHandler.localRetryWithRequiresNew(params);
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithTryCatch1", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithTryCatch1(String params) {
+        try {
+            // 内部方法需要触发重试
+            retryHandler.localRetryWithRequiresNew(params);
+        } catch (Exception e) {
+            log.error("inner method encountered an exception", e);
+        }
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithTryCatch2", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithTryCatch2(String params) {
+        // 由于传播机制为{REQUIRED}，异常被捕获,所以内部不会触发重试
+        try {
+            retryHandler.localRetry(params);
+        } catch (Exception e) {
+            log.error("inner method encountered an exception", e);
+        }
+
         return false;
     }
 

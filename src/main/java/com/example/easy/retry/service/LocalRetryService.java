@@ -31,4 +31,8 @@ public interface LocalRetryService {
 
     boolean localRetryWithPropagationRequiredNew(String params);
 
+    boolean localRetryWithTryCatch1(String params);
+
+    boolean localRetryWithTryCatch2(String params);
+
 }

@@ -46,8 +46,14 @@ public class RetryHandler {
         }
     }
 
-    @Retryable(scene = "localRetry", retryStrategy = RetryType.ONLY_LOCAL, propagation = Propagation.REQUIRES_NEW)
+    @Retryable(scene = "localRetry", retryStrategy = RetryType.ONLY_LOCAL)
     public void localRetry(String params) {
+        System.out.println("local retry 方法开始执行");
+        double i = 1 / 0;
+    }
+
+    @Retryable(scene = "localRetryWithRequiresNew", retryStrategy = RetryType.ONLY_LOCAL, propagation = Propagation.REQUIRES_NEW)
+    public void localRetryWithRequiresNew(String params) {
         System.out.println("local retry 方法开始执行");
         double i = 1 / 0;
     }
