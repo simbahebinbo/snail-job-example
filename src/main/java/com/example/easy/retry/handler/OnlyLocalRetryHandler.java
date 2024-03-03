@@ -3,7 +3,6 @@ package com.example.easy.retry.handler;
 import com.aizuda.easy.retry.client.core.annotation.Propagation;
 import com.aizuda.easy.retry.client.core.annotation.Retryable;
 import com.aizuda.easy.retry.client.core.retryer.RetryType;
-import com.example.easy.retry.vo.OrderVo;
 import org.springframework.stereotype.Component;
 
 import java.util.Random;
@@ -14,7 +13,7 @@ import java.util.Random;
  * @since : 3.1.0
  */
 @Component
-public class RetryHandler {
+public class OnlyLocalRetryHandler {
 
     @Retryable(scene = "localRetryWithTwoRetryMethod1", retryStrategy = RetryType.ONLY_LOCAL)
     public void retryMethod1(String params) {

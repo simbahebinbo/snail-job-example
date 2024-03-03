@@ -24,4 +24,14 @@ public interface RemoteRetryService {
     boolean remoteRetryWithCompleteCallback(String scene, OrderVo orderVo);
 
     boolean remoteRetryWithBizNo(OrderVo orderVo);
+
+    boolean localRetryWithPropagationRequired(String params);
+
+    boolean localRetryWithPropagationRequiredNew(String params);
+
+    boolean localRetryWithTryCatch1(String params);
+
+    boolean localRetryWithTryCatch2(String params);
+
+    boolean localRetryWithTwoRetryMethod(String params);
 }
