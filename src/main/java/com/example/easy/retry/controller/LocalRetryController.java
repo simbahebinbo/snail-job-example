@@ -38,11 +38,11 @@ public class LocalRetryController {
 
     @GetMapping("/localRetryWithAnnoOnInterface")
     @Operation(
-        summary = "@Retryable在接口上执行重试"
+            summary = "@Retryable在接口上执行重试"
     )
     public void localRetryWithAnnoOnInterface(
-        @Parameter(name = "params", description = "测试参数", in = ParameterIn.QUERY,
-            schema = @Schema(type = "string", description = "测试参数"))
+            @Parameter(name = "params", description = "测试参数", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "string", description = "测试参数"))
             @RequestParam("params") String params) {
         localRetryService.localRetryWithAnnoOnInterface(params);
     }
@@ -106,9 +106,84 @@ public class LocalRetryController {
      */
     @Operation(
             description = "指定自定义的异常处理类",
-            summary ="🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
+            summary = "🥇什么是自定义的异常处理类: https://www.easyretry.com/pages/540554/#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E5%99%A8"
     )
-    public boolean localRetryWithRetryMethod(@RequestBody OrderVo orderVo){
-       return localRetryService.localRetryWithRetryMethod(orderVo);
+    public boolean localRetryWithRetryMethod(@RequestBody OrderVo orderVo) {
+        return localRetryService.localRetryWithRetryMethod(orderVo);
+    }
+
+    @GetMapping("/localRetryWithTwoRetryMethod")
+    /**
+     *
+     * 方法内部存在两个串行的方法retryMethod1、retryMethod1 如下所属
+     * public boolean localRetryWithTwoRetryMethod(final String params) {
+     *         retryHandler.retryMethod1(params);
+     *         retryHandler.retryMethod1(params);
+     *         return true;
+     *     }
+     * params: 1 => 则retryMethod1触发重试
+     * params: 2 => 则retryMethod2触发重试
+     * params: 3 => 则retryMethod1随机触发重试, 若retryMethod1重试成功，则retryMethod2一定触发重试否则只触发retryMethod1重试
+     *
+     */
+    @Operation(
+            summary = "N个串行执行的方法触发重试的场景",
+            description = "方法内部存在两个串行的方法retryMethod1、retryMethod1\n" +
+                    "params: 1 => 则retryMethod1触发重试\n" +
+                    "params: 2 => 则retryMethod2触发重试\n" +
+                    "params: 3 => 则retryMethod1随机触发重试, 若retryMethod1重试成功，则retryMethod2一定触发重试否则只触发retryMethod1重试"
+    )
+    public boolean localRetryWithTwoRetryMethod(@RequestParam("params") String params) {
+        return localRetryService.localRetryWithTwoRetryMethod(params);
+    }
+
+    /**
+     * 外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED,
+     * 只执行入口方法重试
+     */
+    @GetMapping("/localRetryWithPropagationRequired")
+    @Operation(
+            description = "外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED, 只执行入口方法重试",
+            summary = "外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED, 只执行入口方法重试"
+    )
+    public boolean localRetryWithPropagationRequired(@RequestParam("params") String params) {
+        return localRetryService.localRetryWithPropagationRequired(params);
+    }
+
+    /**
+     * 外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED_NEW,
+     * 外部和内部方法都触发重试
+     */
+    @GetMapping("/localRetryWithPropagationRequiredNew")
+    @Operation(
+            description = "外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED_NEW,外部和内部方法都触发重试",
+            summary = "外部方法传播机制为REQUIRED，内部方法传播机制为REQUIRED_NEW,外部和内部方法都触发重试"
+    )
+    public boolean localRetryWithPropagationRequiredNew(@RequestParam("params") String params) {
+        return localRetryService.localRetryWithPropagationRequiredNew(params);
+    }
+
+    /**
+     * 内部方法传播机制为REQUIRED_NEW，且异常被try catch捕获，内部方法触发重试，外部方法不会触发重试
+     */
+    @GetMapping("/localRetryWithTryCatch1")
+    @Operation(
+            description = "",
+            summary = "内部方法传播机制为REQUIRED_NEW，且异常被try catch捕获，内部方法触发重试，外部方法不会触发重试"
+    )
+    public boolean localRetryWithTryCatch1(@RequestParam("params") String params) {
+        return localRetryService.localRetryWithTryCatch1(params);
+    }
+
+    /**
+     * 内部方法传播机制为REQUIRED，且异常被try catch捕获，内部方法不会触发重试，外部方法也不会触发重试
+     */
+    @GetMapping("/localRetryWithTryCatch2")
+    @Operation(
+            description = "",
+            summary = "内部方法传播机制为REQUIRED，且异常被try catch捕获，内部方法不会触发重试，外部方法也不会触发重试"
+    )
+    public boolean localRetryWithTryCatch2(@RequestParam("params") String params) {
+        return localRetryService.localRetryWithTryCatch2(params);
     }
 }

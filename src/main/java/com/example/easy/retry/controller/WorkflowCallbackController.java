@@ -1,7 +1,7 @@
 package com.example.easy.retry.controller;
 
 import com.aizuda.easy.retry.server.model.dto.CallbackParamsDTO;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/workflow/callback")
 @Slf4j
+@Tag(name = "工作流回调", description = "工作流回调")
 public class WorkflowCallbackController {
 
     @PostMapping

@@ -2,8 +2,11 @@ package com.example.easy.retry.service.impl;
 
 import com.aizuda.easy.retry.client.core.retryer.RetryType;
 import com.example.easy.retry.customized.OrderRetryMethod;
+import com.example.easy.retry.handler.OnlyLocalRetryHandler;
 import com.example.easy.retry.service.LocalRetryService;
 import com.example.easy.retry.vo.OrderVo;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.aizuda.easy.retry.client.core.annotation.Retryable;
@@ -14,7 +17,12 @@ import com.example.easy.retry.exception.ParamException;
  */
 
 @Component
+@Slf4j
 public class LocalRetryServiceImpl implements LocalRetryService {
+
+    @Autowired
+    private OnlyLocalRetryHandler onlyLocalRetryHandler;
+
     /**
      * 入门案例
      * 我们仅仅需要指定场景值scene就可以给方法赋予重试逻辑
@@ -28,6 +36,13 @@ public class LocalRetryServiceImpl implements LocalRetryService {
     public void localRetry(String params) {
         System.out.println("local retry 方法开始执行");
         double i = 1 / 0;
+    }
+
+    @Override
+    public boolean localRetryWithTwoRetryMethod(final String params) {
+        onlyLocalRetryHandler.retryMethod1(params);
+        onlyLocalRetryHandler.retryMethod2(params);
+        return true;
     }
 
     @Override
@@ -100,6 +115,45 @@ public class LocalRetryServiceImpl implements LocalRetryService {
             retryMethod = OrderRetryMethod.class)
     public boolean localRetryWithRetryMethod(OrderVo orderVo) {
         throw new NullPointerException();
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithPropagationRequired", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithPropagationRequired(String params) {
+        onlyLocalRetryHandler.localRetry(params);
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithPropagationRequiredNew", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithPropagationRequiredNew(final String params) {
+        onlyLocalRetryHandler.localRetryWithRequiresNew(params);
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithTryCatch1", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithTryCatch1(String params) {
+        try {
+            // 内部方法需要触发重试
+            onlyLocalRetryHandler.localRetryWithRequiresNew(params);
+        } catch (Exception e) {
+            log.error("inner method encountered an exception", e);
+        }
+        return false;
+    }
+
+    @Override
+    @Retryable(scene = "localRetryWithTryCatch2", retryStrategy = RetryType.ONLY_LOCAL)
+    public boolean localRetryWithTryCatch2(String params) {
+        // 由于传播机制为{REQUIRED}，异常被捕获,所以内部不会触发重试
+        try {
+            onlyLocalRetryHandler.localRetry(params);
+        } catch (Exception e) {
+            log.error("inner method encountered an exception", e);
+        }
+
+        return false;
     }
 
 }
