@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM amazoncorretto:17
 MAINTAINER xiaowoniu
 
 ADD ./target/easy-retry-example.jar easy-retry-example.jar
