@@ -1,6 +1,6 @@
 <configuration>
 
-    <property name="log.base" value="easy-retry-demo" />
+    <property name="log.base" value="snail-job-demo" />
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -79,7 +79,7 @@
     </appender>
 
     <!-- Snail appender -->
-    <appender name="snailLogAppender" class="com.aizuda.easy.retry.client.common.appender.SnailLogbackAppender">
+    <appender name="snailLogAppender" class="com.aizuda.snailjob.client.common.appender.SnailLogbackAppender">
     </appender>
 
     <!-- 控制台输出日志级别 -->

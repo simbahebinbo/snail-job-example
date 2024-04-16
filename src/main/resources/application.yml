@@ -1,5 +1,6 @@
 server:
   port: 8018
+
 spring:
   mvc:
     pathmatch:
@@ -7,8 +8,8 @@ spring:
   profiles:
     active: dev
   datasource:
-    name: easy_retry
-    url:  jdbc:mysql://localhost:3306/easy_retry_260?useSSL=false&characterEncoding=utf8&useUnicode=true
+    name: snail_job
+    url:  jdbc:mysql://localhost:3306/snail_job_260?useSSL=false&characterEncoding=utf8&useUnicode=true
     username: root
     password: root
     type: com.zaxxer.hikari.HikariDataSource
@@ -22,9 +23,10 @@ spring:
       pool-name: demo
       max-lifetime: 1800000
       connection-test-query: SELECT 1
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
-  typeAliasesPackage: com.example.easy.retry.po
+  typeAliasesPackage: com.example.snail.job.po
   global-config:
     db-config:
       field-strategy: NOT_EMPTY
@@ -43,4 +45,4 @@ snail-job:
     host: 127.0.0.1
     port: 1788
   namespace: 764d604ec6fc45f68cd92514c40e9e1a
-  token: ER_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj
+  token: SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj
