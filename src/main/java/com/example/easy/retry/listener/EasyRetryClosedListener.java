@@ -1,7 +1,6 @@
 package com.example.easy.retry.listener;
 
-import com.aizuda.easy.retry.client.common.event.EasyRetryClosedEvent;
-import com.aizuda.easy.retry.client.common.event.EasyRetryStartedEvent;
+import com.aizuda.easy.retry.client.common.event.SnailClientClosedEvent;
 import com.aizuda.easy.retry.common.log.EasyRetryLog;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Component;
  * @since 3.1.0
  */
 @Component
-public class EasyRetryClosedListener implements ApplicationListener<EasyRetryClosedEvent> {
+public class EasyRetryClosedListener implements ApplicationListener<SnailClientClosedEvent> {
     @Override
-    public void onApplicationEvent(EasyRetryClosedEvent event) {
+    public void onApplicationEvent(SnailClientClosedEvent event) {
         EasyRetryLog.LOCAL.info("这是一个EasyRetry关闭完成事件");
     }
 }

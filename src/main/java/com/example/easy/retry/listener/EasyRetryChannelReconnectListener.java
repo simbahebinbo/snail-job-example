@@ -1,6 +1,6 @@
 package com.example.easy.retry.listener;
 
-import com.aizuda.easy.retry.client.common.event.ChannelReconnectEvent;
+import com.aizuda.easy.retry.client.common.event.SnailChannelReconnectEvent;
 import com.aizuda.easy.retry.common.log.EasyRetryLog;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  * @since 3.1.0
  */
 @Component
-public class EasyRetryChannelReconnectListener implements ApplicationListener<ChannelReconnectEvent> {
+public class EasyRetryChannelReconnectListener implements ApplicationListener<SnailChannelReconnectEvent> {
     @Override
-    public void onApplicationEvent(ChannelReconnectEvent event) {
+    public void onApplicationEvent(SnailChannelReconnectEvent event) {
         EasyRetryLog.LOCAL.info("这个一个重连事件");
     }
 }
