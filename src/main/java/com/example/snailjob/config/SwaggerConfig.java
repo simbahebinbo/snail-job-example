@@ -43,7 +43,7 @@ public class SwaggerConfig {
             .group("user")
             .pathsToMatch("/**")
             //扫描路径，将路径下有swagger注解的接口解析到文档中
-            .packagesToScan("com.example.easy.retry.controller")
+            .packagesToScan("com.example.snailjob.controller")
             .build();
     }
 }
