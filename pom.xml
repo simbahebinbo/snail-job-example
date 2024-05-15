@@ -43,23 +43,18 @@
         </dependency>
         <dependency>
             <groupId>com.aizuda</groupId>
-            <artifactId>easy-retry-client-starter</artifactId>
-            <version>3.2.0</version>
+            <artifactId>snail-job-client-starter</artifactId>
+            <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
             <groupId>com.aizuda</groupId>
-            <artifactId>easy-retry-client-core</artifactId>
-            <version>3.2.0</version>
+            <artifactId>snail-job-client-retry-core</artifactId>
+            <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
             <groupId>com.aizuda</groupId>
-            <artifactId>easy-retry-client-job-core</artifactId>
-            <version>3.2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.28</version>
+            <artifactId>snail-job-client-job-core</artifactId>
+            <version>1.0.0-beta1</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.aviator</groupId>
@@ -119,7 +114,7 @@
     </dependencies>
 
     <build>
-        <finalName>easy-retry-example</finalName>
+        <finalName>snail-job-example</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
