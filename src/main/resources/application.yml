@@ -45,4 +45,5 @@ snail-job:
     host: 127.0.0.1
     port: 1788
   namespace: 764d604ec6fc45f68cd92514c40e9e1a
-  token: SJ_Wyz3dmsdbDOkDujOTSSoBjGQP1BMsVnj
+  token: SJ_ewCVWgIhJ6qhGnoNdYCCWxpCuilBg4Bb
+  group: snail_job_demo_group
