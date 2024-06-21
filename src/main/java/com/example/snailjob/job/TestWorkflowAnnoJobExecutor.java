@@ -25,7 +25,7 @@ public class TestWorkflowAnnoJobExecutor {
         // 测试上下文传递
         int i = new Random().nextInt(1000);
         jobArgs.appendContext("name" + i, "小蜗牛" + i);
-        jobArgs.appendContext("age", 18);
+        jobArgs.appendContext("age", i);
         return ExecuteResult.success(failOrderPo);
     }
 
