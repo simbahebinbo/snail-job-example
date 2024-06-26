@@ -9,8 +9,12 @@ import com.aizuda.snailjob.client.job.core.dto.MapArgs;
 import com.aizuda.snailjob.client.job.core.dto.MergeReduceArgs;
 import com.aizuda.snailjob.client.job.core.dto.ReduceArgs;
 import com.aizuda.snailjob.client.model.ExecuteResult;
+import com.aizuda.snailjob.common.core.util.JsonUtil;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author: opensnail
@@ -23,13 +27,14 @@ public class TestAnnoMapReduceJobExecutor {
     @MapExecutor
     public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         System.out.println(mapArgs);
-        return mapHandler.doMap(Lists.newArrayList("aaa"), "MONTH_MAP");
+        return mapHandler.doMap(Lists.newArrayList(1, 2, 3, 4, 5, 6), "MONTH_MAP");
     }
 
     @MapExecutor(taskName = "MONTH_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         System.out.println(mapArgs);
-        return ExecuteResult.success(123);
+        String mapResult = mapArgs.getMapResult();
+        return ExecuteResult.success(mapResult);
     }
 
     @MapExecutor(taskName = "LAST_MAP")
@@ -41,7 +46,8 @@ public class TestAnnoMapReduceJobExecutor {
     @ReduceExecutor
     public ExecuteResult reduceExecute(ReduceArgs mapReduceArgs) {
         System.out.println(mapReduceArgs);
-        return ExecuteResult.success();
+        List<String> mapResult = (List<String>) mapReduceArgs.getMapResult();
+        return ExecuteResult.success(mapResult.stream().map(Integer::parseInt).mapToInt(Integer::intValue).sum());
     }
 
     /**
