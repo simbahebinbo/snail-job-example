@@ -1,5 +1,6 @@
 package com.example.snailjob.job;
 
+import com.aizuda.snailjob.client.job.core.MapHandler;
 import com.aizuda.snailjob.client.job.core.dto.MapArgs;
 import com.aizuda.snailjob.client.job.core.dto.MergeReduceArgs;
 import com.aizuda.snailjob.client.job.core.dto.ReduceArgs;
@@ -32,7 +33,7 @@ import java.util.Random;
 public class TestMapReduceJobExecutor extends AbstractMapReduceExecutor {
 
     @Override
-    public ExecuteResult doJobMapExecute(MapArgs mapArgs) {
+    public ExecuteResult doJobMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         MapEnum mapEnum = MapEnum.ofMap(mapArgs.getTaskName());
         if (Objects.nonNull(mapEnum) && Objects.nonNull(mapEnum.getMap())) {
             Map map = mapEnum.getMap();
@@ -42,7 +43,7 @@ public class TestMapReduceJobExecutor extends AbstractMapReduceExecutor {
                 nextName = nextMap.name();
             }
 
-            return doMap(map.map(mapArgs), nextName);
+            return mapHandler.doMap(map.map(mapArgs), nextName);
         }
 
         // 未找到map的任务，则说明当前需要进行处理

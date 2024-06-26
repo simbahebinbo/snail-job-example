@@ -1,5 +1,6 @@
 package com.example.snailjob.job;
 
+import com.aizuda.snailjob.client.job.core.MapHandler;
 import com.aizuda.snailjob.client.job.core.dto.MapArgs;
 
 import com.aizuda.snailjob.client.job.core.executor.AbstractMapExecutor;
@@ -30,7 +31,7 @@ import java.util.Random;
 public class TestMapJobExecutor extends AbstractMapExecutor {
 
     @Override
-    public ExecuteResult doJobMapExecute(MapArgs mapArgs) {
+    public ExecuteResult doJobMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         MapEnum mapEnum = MapEnum.ofMap(mapArgs.getTaskName());
         if (Objects.nonNull(mapEnum) && Objects.nonNull(mapEnum.getMap())) {
            Map map = mapEnum.getMap();
@@ -40,7 +41,7 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
                 nextName = nextMap.name();
             }
 
-            return doMap(map.map(mapArgs), nextName);
+            return mapHandler.doMap(map.map(mapArgs), nextName);
         }
 
         // 未找到map的任务，则说明当前需要进行处理

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class TestPartitionJobExecutor {
 
     public ExecuteResult jobExecute(JobArgs jobArgs) {
-        if (jobArgs.getArgsStr().equals("1")) {
+        if (jobArgs.getJobParams().equals("1")) {
             throw new NullPointerException("分区空指针抛异常了");
         }
         FailOrderPo failOrderPo = new FailOrderPo();
