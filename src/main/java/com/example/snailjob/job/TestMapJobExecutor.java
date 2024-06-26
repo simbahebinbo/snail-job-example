@@ -1,13 +1,17 @@
 package com.example.snailjob.job;
 
 import com.aizuda.snailjob.client.job.core.dto.MapArgs;
+
 import com.aizuda.snailjob.client.job.core.executor.AbstractMapExecutor;
 import com.aizuda.snailjob.client.model.ExecuteResult;
 import com.aizuda.snailjob.common.core.util.JsonUtil;
+import com.aizuda.snailjob.common.log.SnailJobLog;
+import com.example.snailjob.job.TestMapReduceJobExecutor.QuarterMap.SubTask;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -28,16 +32,22 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
     @Override
     public ExecuteResult doJobMapExecute(MapArgs mapArgs) {
         MapEnum mapEnum = MapEnum.ofMap(mapArgs.getTaskName());
-        if (Objects.nonNull(mapEnum)) {
-            Map map = mapEnum.getMap();
-            return doMap(map.map(mapArgs), mapEnum.name());
+        if (Objects.nonNull(mapEnum) && Objects.nonNull(mapEnum.getMap())) {
+           Map map = mapEnum.getMap();
+           MapEnum nextMap = mapEnum.getNextMap();
+            String nextName = null;
+            if (Objects.nonNull(nextMap)) {
+                nextName = nextMap.name();
+            }
+
+            return doMap(map.map(mapArgs), nextName);
         }
 
         // 未找到map的任务，则说明当前需要进行处理
         String mapResult = mapArgs.getMapResult();
-
+        SnailJobLog.LOCAL.info("LAST_MAP 开始执行 mapResult:{}", mapResult);
         // 获取最后一次map的信息.
-        MonthMap.SubTask subTask = JsonUtil.parseObject(mapResult, MonthMap.SubTask.class);
+        SubTask subTask = JsonUtil.parseObject(mapResult, SubTask.class);
         // 此处可以统计数据或者做其他的事情
         // 模拟统计营业额
         int turnover = new Random().nextInt(1000000);
@@ -47,14 +57,16 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
 
     @Getter
     private enum MapEnum {
-        MAP_ROOT(new RootMap()),
-        MONTH_MAP(new MonthMap())
+        LAST_MAP(null, null),
+        MONTH_MAP(new QuarterMap(), LAST_MAP),
+        MAP_ROOT(new RootMap(), MONTH_MAP),
         ;
 
         private final Map map;
-
-        MapEnum(Map map) {
+        private final MapEnum nextMap;
+        MapEnum(Map map, MapEnum nextMap) {
             this.map = map;
+            this.nextMap = nextMap;
         }
 
         public static MapEnum ofMap(String taskName) {
@@ -69,7 +81,7 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
 
     }
 
-    private static class RootMap implements Map  {
+    private static class RootMap implements Map {
 
         @Override
         public List map(MapArgs args) {
@@ -80,7 +92,7 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
         }
     }
 
-    public static class MonthMap implements Map  {
+    public static class QuarterMap implements Map {
 
         @Override
         public List map(MapArgs args) {
@@ -88,10 +100,10 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
             // 第二层按照月分片
             // 4个季度
             List<Long> lists = JsonUtil.parseList(args.getMapResult(), Long.class);
-            List<SubTask> list = new ArrayList<>();
+            List<TestMapReduceJobExecutor.QuarterMap.SubTask> list = new ArrayList<>();
             for (final Long id : lists) {
                 for (int i = 1; i <= 4; i++) {
-                    list.add(new SubTask(id, i));
+                    list.add(new TestMapReduceJobExecutor.QuarterMap.SubTask(id, i));
                 }
             }
 
@@ -100,6 +112,7 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
 
         @Data
         @AllArgsConstructor
+        @NoArgsConstructor
         public static class SubTask {
             // 商家id
             private Long id;
