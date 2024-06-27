@@ -1,5 +1,6 @@
 package com.example.snailjob.job;
 
+import cn.hutool.core.util.ByteUtil;
 import com.aizuda.snailjob.client.job.core.MapHandler;
 import com.aizuda.snailjob.client.job.core.dto.MapArgs;
 import com.aizuda.snailjob.client.job.core.dto.MergeReduceArgs;
@@ -9,6 +10,7 @@ import com.aizuda.snailjob.client.model.ExecuteResult;
 import com.aizuda.snailjob.common.core.util.JsonUtil;
 import com.aizuda.snailjob.common.log.SnailJobLog;
 import com.example.snailjob.job.TestMapReduceJobExecutor.QuarterMap.SubTask;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,10 +49,10 @@ public class TestMapReduceJobExecutor extends AbstractMapReduceExecutor {
         }
 
         // 未找到map的任务，则说明当前需要进行处理
-        String mapResult = mapArgs.getMapResult();
-        SnailJobLog.LOCAL.info("LAST_MAP 开始执行 mapResult:{}", mapResult);
+        JsonNode json = JsonUtil.toJson(mapArgs.getMapResult());
+        SnailJobLog.LOCAL.info("LAST_MAP 开始执行 mapResult:{}", json);
         // 获取最后一次map的信息.
-        SubTask subTask = JsonUtil.parseObject(mapResult, SubTask.class);
+        SubTask subTask = JsonUtil.parseObject(json.toString(), SubTask.class);
         // 此处可以统计数据或者做其他的事情
         // 模拟统计营业额
         int turnover = new Random().nextInt(1000000);
@@ -114,14 +116,14 @@ public class TestMapReduceJobExecutor extends AbstractMapReduceExecutor {
 
             // 第二层按照月分片
             // 4个季度
-            List<Long> lists = JsonUtil.parseList(args.getMapResult(), Long.class);
+            JsonNode json = JsonUtil.toJson(args.getMapResult());
             List<SubTask> list = new ArrayList<>();
-            for (final Long id : lists) {
+            for (JsonNode jsonNode : json) {
+                long id = jsonNode.asLong();
                 for (int i = 1; i <= 4; i++) {
                     list.add(new SubTask(id, i));
                 }
             }
-
             return list;
         }
 
