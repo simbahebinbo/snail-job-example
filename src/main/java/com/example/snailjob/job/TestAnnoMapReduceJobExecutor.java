@@ -27,27 +27,24 @@ public class TestAnnoMapReduceJobExecutor {
     @MapExecutor
     public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         System.out.println(mapArgs);
-        return mapHandler.doMap(Lists.newArrayList(1, 2, 3, 4, 5, 6), "MONTH_MAP");
+        return mapHandler.doMap(Lists.newArrayList("1", "2", "3", "4", "5", "6"), "MONTH_MAP");
     }
 
     @MapExecutor(taskName = "MONTH_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         System.out.println(mapArgs);
-        String mapResult = mapArgs.getMapResult();
-        return ExecuteResult.success(mapResult);
-    }
-
-    @MapExecutor(taskName = "LAST_MAP")
-    public ExecuteResult lastMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
-        System.out.println(mapArgs);
-        return ExecuteResult.success();
+        return ExecuteResult.success(Integer.parseInt((String) mapArgs.getMapResult()) * 2);
     }
 
     @ReduceExecutor
     public ExecuteResult reduceExecute(ReduceArgs mapReduceArgs) {
         System.out.println(mapReduceArgs);
-        List<String> mapResult = (List<String>) mapReduceArgs.getMapResult();
-        return ExecuteResult.success(mapResult.stream().map(Integer::parseInt).mapToInt(Integer::intValue).sum());
+        return ExecuteResult.success(
+            mapReduceArgs.getMapResult()
+                .stream()
+                .map(String::valueOf)
+                .map(Integer::parseInt)
+                .mapToInt(Integer::intValue).sum());
     }
 
     /**
@@ -56,6 +53,11 @@ public class TestAnnoMapReduceJobExecutor {
     @MergeReduceExecutor
     public ExecuteResult mergeReduceExecute(MergeReduceArgs mergeReduceArgs) {
         System.out.println(mergeReduceArgs);
-        return ExecuteResult.success();
+        return ExecuteResult.success(
+            mergeReduceArgs.getReduces()
+                .stream()
+                .map(String::valueOf)
+                .map(Integer::parseInt)
+                .mapToInt(Integer::intValue).sum());
     }
 }
