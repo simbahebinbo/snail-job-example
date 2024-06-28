@@ -27,18 +27,23 @@ public class TestAnnoMapReduceJobExecutor {
     @MapExecutor
     public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         System.out.println(mapArgs);
+        System.out.println(mapArgs.getWfContext());
+        mapArgs.appendContext("name", "zsg");
         return mapHandler.doMap(Lists.newArrayList("1", "2", "3", "4", "5", "6"), "MONTH_MAP");
     }
 
     @MapExecutor(taskName = "MONTH_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         System.out.println(mapArgs);
+        System.out.println(mapArgs.getWfContext());
+        mapArgs.appendContext("age", "111");
         return ExecuteResult.success(Integer.parseInt((String) mapArgs.getMapResult()) * 2);
     }
 
     @ReduceExecutor
     public ExecuteResult reduceExecute(ReduceArgs mapReduceArgs) {
         System.out.println(mapReduceArgs);
+        System.out.println(mapReduceArgs.getWfContext());
         return ExecuteResult.success(
             mapReduceArgs.getMapResult()
                 .stream()
@@ -53,6 +58,7 @@ public class TestAnnoMapReduceJobExecutor {
     @MergeReduceExecutor
     public ExecuteResult mergeReduceExecute(MergeReduceArgs mergeReduceArgs) {
         System.out.println(mergeReduceArgs);
+        System.out.println(mergeReduceArgs.getWfContext());
         return ExecuteResult.success(
             mergeReduceArgs.getReduces()
                 .stream()

@@ -19,18 +19,21 @@ public class TestAnnoMapJobExecutor {
     @MapExecutor
     public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         System.out.println(mapArgs);
+        System.out.println(mapArgs.getWfContext());
         return mapHandler.doMap(Lists.newArrayList("1", "2", "3"), "MONTH_MAP");
     }
 
-    @MapExecutor(taskName = "MONTH_MAP1")
+    @MapExecutor(taskName = "MONTH_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         System.out.println(mapArgs);
+        System.out.println(mapArgs.getWfContext());
         return ExecuteResult.success(123);
     }
 
     @MapExecutor(taskName = "LAST_MAP")
     public ExecuteResult lastMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
         System.out.println(mapArgs);
+        System.out.println(mapArgs.getWfContext());
         return ExecuteResult.success();
     }
 
