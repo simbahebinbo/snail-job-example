@@ -44,7 +44,7 @@ public class TestExcelAnalyseMapReduceJobExecutor {
      * @since 2024/6/29 14:03
      */
     @MapExecutor
-    public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
+    public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler<List<Long>> mapHandler) {
         List<List<Long>> ranges = null;
         // 先获取文件总行数，便于分组
         try {
@@ -54,11 +54,11 @@ public class TestExcelAnalyseMapReduceJobExecutor {
             EasyExcel.read(numberInputStream, PhoneNumberBo.class, phoneNumberExcelListener).sheet().headRowNumber(1).doReadSync();
 
             // 设置区间范围
-            ranges = TestMapReduceJobExecutor.doSharding(0L, phoneNumberCheckBo.getCheckTotalNum(), BATCH_SIZE);
+            ranges = TestMapReduceJobExecutor.doSharding(0L, phoneNumberCheckBo.getTotal(), BATCH_SIZE);
         } catch (Exception e) {
             log.error("文件读取异常", e.getMessage());
         }
-        return mapHandler.doMap(ranges, "MONTH_MAP");
+        return mapHandler.doMap(ranges, "TWO_MAP");
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestExcelAnalyseMapReduceJobExecutor {
      * @author JichenWang
      * @since 2024/6/29 14:04
      */
-    @MapExecutor(taskName = "MONTH_MAP")
+    @MapExecutor(taskName = "TWO_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         // 获取本次要处理的区间
         final List<Integer> mapResult = (List<Integer>) mapArgs.getMapResult();
@@ -116,17 +116,17 @@ public class TestExcelAnalyseMapReduceJobExecutor {
     private PhoneNumberCheckBo buildGatherPhoneNumberCheckBo(String phoneNumberCheckBoStr) {
         final List<PhoneNumberCheckBo> phoneNumberCheckBoList = JSONArray.parseArray(phoneNumberCheckBoStr, PhoneNumberCheckBo.class);
         // 获取校验总数
-        final long checkTotalNum = phoneNumberCheckBoList.get(0).getCheckTotalNum();
+        final long checkTotalNum = phoneNumberCheckBoList.get(0).getTotal();
         // 汇总校验失败数量
-        final long checkErrorNum = phoneNumberCheckBoList.stream().mapToLong(PhoneNumberCheckBo::getCheckErrorNum).sum();
+        final long checkErrorNum = phoneNumberCheckBoList.stream().mapToLong(PhoneNumberCheckBo::getError).sum();
         // 汇总校验成功数量
-        final long checkSuccessNum = phoneNumberCheckBoList.stream().mapToLong(PhoneNumberCheckBo::getCheckSuccessNum).sum();
+        final long checkSuccessNum = phoneNumberCheckBoList.stream().mapToLong(PhoneNumberCheckBo::getSuccess).sum();
         // 汇总错误手机号
         final List<String> errorPhoneNumberList = new ArrayList<>();
-        phoneNumberCheckBoList.forEach(item -> errorPhoneNumberList.addAll(item.getCheckErrorPhoneNumberList()));
+        phoneNumberCheckBoList.forEach(item -> errorPhoneNumberList.addAll(item.getCheckErrors()));
 
         // 汇总手机号校验结果
-        return PhoneNumberCheckBo.builder().checkTotalNum(checkTotalNum).checkErrorNum(checkErrorNum).checkSuccessNum(checkSuccessNum).checkErrorPhoneNumberList(errorPhoneNumberList).build();
+        return PhoneNumberCheckBo.builder().total(checkTotalNum).error(checkErrorNum).success(checkSuccessNum).checkErrors(errorPhoneNumberList).build();
     }
 
 }

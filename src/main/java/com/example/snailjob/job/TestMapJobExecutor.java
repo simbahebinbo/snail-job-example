@@ -60,8 +60,8 @@ public class TestMapJobExecutor extends AbstractMapExecutor {
     @Getter
     private enum MapEnum {
         LAST_MAP(null, null),
-        MONTH_MAP(new QuarterMap(), LAST_MAP),
-        MAP_ROOT(new RootMap(), MONTH_MAP),
+        QUARTER_MAP(new QuarterMap(), LAST_MAP),
+        MAP_ROOT(new RootMap(), QUARTER_MAP),
         ;
 
         private final Map map;

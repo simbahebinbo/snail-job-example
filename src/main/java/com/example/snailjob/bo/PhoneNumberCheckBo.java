@@ -1,6 +1,5 @@
 package com.example.snailjob.bo;
 
-import com.example.snailjob.po.PhoneNumberPo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,18 +22,18 @@ import java.util.List;
 public class PhoneNumberCheckBo {
 
     @Schema(description = "检测总条数", accessMode = Schema.AccessMode.READ_WRITE)
-    private Long checkTotalNum = 0L;
+    private Long total = 0L;
 
     @Schema(description = "检测失败条数", accessMode = Schema.AccessMode.READ_WRITE)
-    private Long checkErrorNum = 0L;
+    private Long error = 0L;
 
     @Schema(description = "检测成功条数", accessMode = Schema.AccessMode.READ_WRITE)
-    private Long checkSuccessNum = 0L;
+    private Long success = 0L;
 
     @Schema(description = "检测失败临时的数据", accessMode = Schema.AccessMode.READ_WRITE)
-    private List<String> checkErrorPhoneNumberList = new ArrayList<>();
+    private List<String> checkErrors = new ArrayList<>();
 
-    @Schema(description = "检测成功临时的数据", accessMode = Schema.AccessMode.READ_WRITE)
-    private List<PhoneNumberPo> checkSuccessPhoneNumberList = new ArrayList<>();
+//    @Schema(description = "检测成功临时的数据", accessMode = Schema.AccessMode.READ_WRITE)
+//    private List<PhoneNumberPo> checkSuccessPhoneNumberList = new ArrayList<>();
 
 }

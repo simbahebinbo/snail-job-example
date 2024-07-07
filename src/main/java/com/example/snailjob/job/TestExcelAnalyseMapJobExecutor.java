@@ -11,16 +11,18 @@ import com.example.snailjob.bo.PhoneNumberBo;
 import com.example.snailjob.bo.PhoneNumberCheckBo;
 import com.example.snailjob.dao.PhoneNumberDao;
 import com.example.snailjob.listener.PhoneNumberExcelListener;
+import com.example.snailjob.po.PhoneNumberPo;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 解析手机号excel文件，并将正确的手机号分片入库
+ * 解析excel文件中的手机号码，并将错误的手机号分片入库
  *
  * @author JiChenWang
  * @since 2024/6/30 10:37
@@ -44,7 +46,7 @@ public class TestExcelAnalyseMapJobExecutor {
      * @since 2024/6/30 10:48
      */
     @MapExecutor
-    public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler mapHandler) {
+    public ExecuteResult rootMapExecute(MapArgs mapArgs, MapHandler<List<Long>> mapHandler) {
         List<List<Long>> ranges = null;
         // 先获取文件总行数，便于分组
         try {
@@ -54,11 +56,11 @@ public class TestExcelAnalyseMapJobExecutor {
             EasyExcel.read(numberInputStream, PhoneNumberBo.class, phoneNumberExcelListener).sheet().headRowNumber(1).doReadSync();
 
             // 设置区间范围
-            ranges = TestMapReduceJobExecutor.doSharding(0L, phoneNumberCheckBo.getCheckTotalNum(), BATCH_SIZE);
+            ranges = TestMapReduceJobExecutor.doSharding(0L, phoneNumberCheckBo.getTotal(), BATCH_SIZE);
         } catch (Exception e) {
             log.error("文件读取异常", e.getMessage());
         }
-        return mapHandler.doMap(ranges, "MONTH_MAP");
+        return mapHandler.doMap(ranges, "TWO_MAP");
 
     }
 
@@ -70,7 +72,7 @@ public class TestExcelAnalyseMapJobExecutor {
      * @author JichenWang
      * @since 2024/6/30 11:05
      */
-    @MapExecutor(taskName = "MONTH_MAP")
+    @MapExecutor(taskName = "TWO_MAP")
     public ExecuteResult monthMapExecute(MapArgs mapArgs) {
         // 获取本次要处理的区间
         final List<Integer> mapResult = (List<Integer>) mapArgs.getMapResult();
@@ -87,11 +89,18 @@ public class TestExcelAnalyseMapJobExecutor {
         }
 
         // 如果正确手机号不为空，则入库
-        if (ObjectUtil.isNotEmpty(phoneNumberCheckBo.getCheckSuccessPhoneNumberList())) {
-            phoneNumberDao.insertBatch(phoneNumberCheckBo.getCheckSuccessPhoneNumberList());
+        if (ObjectUtil.isNotEmpty(phoneNumberCheckBo.getCheckErrors())) {
+
+            List<PhoneNumberPo> numberPos = new ArrayList<>();
+            for (String no : phoneNumberCheckBo.getCheckErrors()) {
+                PhoneNumberPo numberPo = new PhoneNumberPo();
+                numberPo.setPhoneNumber(no);
+                numberPos.add(numberPo);
+            }
+            phoneNumberDao.insertBatch(numberPos);
         }
 
-        return ExecuteResult.success(phoneNumberCheckBo.getCheckSuccessNum());
+        return ExecuteResult.success(phoneNumberCheckBo.getError());
     }
 
 }

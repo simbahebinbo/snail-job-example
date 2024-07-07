@@ -1,6 +1,5 @@
 package com.example.snailjob.job;
 
-import cn.hutool.core.util.ByteUtil;
 import com.aizuda.snailjob.client.job.core.MapHandler;
 import com.aizuda.snailjob.client.job.core.dto.MapArgs;
 import com.aizuda.snailjob.client.job.core.dto.MergeReduceArgs;
@@ -75,8 +74,8 @@ public class TestMapReduceJobExecutor extends AbstractMapReduceExecutor {
     @Getter
     private enum MapEnum {
         LAST_MAP(null, null),
-        MONTH_MAP(new QuarterMap(), LAST_MAP),
-        MAP_ROOT(new RootMap(), MONTH_MAP),
+        QUARTER_MAP(new QuarterMap(), LAST_MAP),
+        MAP_ROOT(new RootMap(), QUARTER_MAP),
         ;
 
         private final Map map;

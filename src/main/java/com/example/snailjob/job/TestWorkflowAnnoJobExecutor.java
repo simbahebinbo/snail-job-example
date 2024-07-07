@@ -26,6 +26,7 @@ public class TestWorkflowAnnoJobExecutor {
         int i = new Random().nextInt(1000);
         jobArgs.appendContext("name" + i, "小蜗牛" + i);
         jobArgs.appendContext("age", i);
+        SnailJobLog.REMOTE.info("上下文: {}", jobArgs.getWfContext());
         return ExecuteResult.success(failOrderPo);
     }
 

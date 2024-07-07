@@ -6,10 +6,8 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.example.snailjob.bo.PhoneNumberBo;
 import com.example.snailjob.bo.PhoneNumberCheckBo;
-import com.example.snailjob.po.PhoneNumberPo;
 import lombok.extern.slf4j.Slf4j;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -35,7 +33,7 @@ public class PhoneNumberExcelListener extends AnalysisEventListener<PhoneNumberB
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
-        this.phoneNumberCheckBo.setCheckTotalNum(Long.parseLong(String.valueOf(context.readSheetHolder().getApproximateTotalRowNumber() - 1)));
+        this.phoneNumberCheckBo.setTotal(Long.parseLong(String.valueOf(context.readSheetHolder().getApproximateTotalRowNumber() - 1)));
     }
 
     @Override
@@ -55,12 +53,12 @@ public class PhoneNumberExcelListener extends AnalysisEventListener<PhoneNumberB
         log.info("本次校验的手机号为: {}", phoneNumberBo.getPhoneNumber());
         Boolean validateStatus = Validator.isMobile(phoneNumberBo.getPhoneNumber());
         if (validateStatus) {
-            this.phoneNumberCheckBo.setCheckSuccessNum(this.phoneNumberCheckBo.getCheckSuccessNum() + 1);
-            final PhoneNumberPo phoneNumberPo = PhoneNumberPo.builder().phoneNumber(phoneNumberBo.getPhoneNumber()).createTime(LocalDateTime.now()).build();
-            this.phoneNumberCheckBo.getCheckSuccessPhoneNumberList().add(phoneNumberPo);
+            this.phoneNumberCheckBo.setSuccess(this.phoneNumberCheckBo.getSuccess() + 1);
+//            final PhoneNumberPo phoneNumberPo = PhoneNumberPo.builder().phoneNumber(phoneNumberBo.getPhoneNumber()).createTime(LocalDateTime.now()).build();
+//            this.phoneNumberCheckBo.getCheckSuccessPhoneNumberList().add(phoneNumberPo);
         } else {
-            this.phoneNumberCheckBo.setCheckErrorNum(this.phoneNumberCheckBo.getCheckErrorNum() + 1);
-            this.phoneNumberCheckBo.getCheckErrorPhoneNumberList().add(phoneNumberBo.getPhoneNumber());
+            this.phoneNumberCheckBo.setError(this.phoneNumberCheckBo.getError() + 1);
+            this.phoneNumberCheckBo.getCheckErrors().add(phoneNumberBo.getPhoneNumber());
         }
     }
 
