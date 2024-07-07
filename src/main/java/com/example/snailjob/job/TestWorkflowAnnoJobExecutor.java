@@ -8,6 +8,8 @@ import com.aizuda.snailjob.common.log.SnailJobLog;
 import com.example.snailjob.po.FailOrderPo;
 import org.springframework.stereotype.Component;
 
+import java.util.Random;
+
 /**
  * @author www.byteblogs.com
  * @date 2023-09-28 22:54:07
@@ -18,11 +20,13 @@ import org.springframework.stereotype.Component;
 public class TestWorkflowAnnoJobExecutor {
 
     public ExecuteResult jobExecute(JobArgs jobArgs) throws InterruptedException {
-//        for (int i = 0; i < 30; i++) {
-//            SnailJobLog.REMOTE.info("任务执行开始. [{}]", i + "" + JsonUtil.toJsonString(jobArgs));
-//        }
         FailOrderPo failOrderPo = new FailOrderPo();
         failOrderPo.setOrderId("xiaowoniu");
+        // 测试上下文传递
+        int i = new Random().nextInt(1000);
+        jobArgs.appendContext("name" + i, "小蜗牛" + i);
+        jobArgs.appendContext("age", i);
+        SnailJobLog.REMOTE.info("上下文: {}", jobArgs.getWfContext());
         return ExecuteResult.success(failOrderPo);
     }
 

@@ -13,3 +13,11 @@ CREATE TABLE fail_order
 `update_dt`         datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
 PRIMARY KEY (`id`)
 );
+
+-- 手机号表
+CREATE TABLE `phone_number` (
+    `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `phone_number` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
+    `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='手机号表'
