@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.TimeZone;
 
 @SpringBootApplication
-@EnableSnailJob(group = "snail_job_demo_group")
+@EnableSnailJob
 @MapperScan("com.example.snailjob.dao")
 public class SnailJobSpringbootApplication {
 
