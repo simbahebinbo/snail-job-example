@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.TimeZone;
+import java.util.concurrent.locks.ReentrantLock;
 
 @SpringBootApplication
 @EnableSnailJob
@@ -13,6 +14,9 @@ import java.util.TimeZone;
 public class SnailJobSpringbootApplication {
 
     public static void main(String[] args) {
+
+        ReentrantLock reentrantLock = new ReentrantLock();
+        reentrantLock.lock();
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication.run(SnailJobSpringbootApplication.class, args);
     }
