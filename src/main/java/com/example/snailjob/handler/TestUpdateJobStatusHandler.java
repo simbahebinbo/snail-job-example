@@ -16,7 +16,7 @@ public class TestUpdateJobStatusHandler {
     public Boolean updateJobStatus(Long jobId){
         return SnailJobOpenApi
                 .updateJobStatus(jobId)
-                .setStatus(StatusEnum.NO)
+                .setStatus(StatusEnum.YES)
                 .execute();
     }
 
