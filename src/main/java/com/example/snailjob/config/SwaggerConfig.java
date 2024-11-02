@@ -23,16 +23,16 @@ public class SwaggerConfig {
         return new OpenAPI()
             .info(new Info()
                 .title("Snail Job Example")
-                .description("<h1>SnailJob是致力提高分布式业务系统一致性的分布式重试平台</h1> \n" +
-                    "<h3>官网地址: https://www.easyretry.com/</h3>" +
-                    "<h3>在线体验地址: http://preview.easyretry.com/</h3> " +
-                    "<h3>源码地址: https://gitee.com/byteblogs168/easy-retry-demo</h3>" +
+                .description("<h1>SnailJob是一个灵活，可靠和快速的分布式任务重试和分布式任务调度平台</h1> \n" +
+                    "<h3>官网地址: https://snailjob.opensnail.com/</h3>" +
+                    "<h3>在线体验地址: https://preview.snailjob.opensnail.com/</h3> " +
+                    "<h3>源码地址: https://gitee.com/opensnail/snail-job-demo</h3>" +
                     "<h3>特别提醒: 🌻在您使用测试案例之前请认真的阅读官网.</h3>")
                 .version(SnailJobVersion.getVersion())
-                .license(new License().name("Apache 2.0").url("https://www.easyretry.com/")))
+                .license(new License().name("Apache 2.0").url("https://snailjob.opensnail.com/")))
             .externalDocs(new ExternalDocumentation()
-                .description("视频教程:从0到1快速了解分布式重试组件EasyRetry")
-                .url("https://www.ixigua.com/pseries/7272009348824433213/"))
+                .description("视频教程:以小白视角的SnailJob入门级视频教程")
+                .url("https://www.bilibili.com/video/BV1pvtBerEmV/?vd_source=ec323e2347232ea82321f54aba036b63"))
             ;
     }
 
