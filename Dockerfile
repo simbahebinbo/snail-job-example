@@ -1,7 +1,7 @@
-FROM amazoncorretto:17
+FROM amazoncorretto:21
 MAINTAINER xiaowoniu
 
-ADD ./target/snail-job-example.jar snail-job-example.jar
+ADD ./target/example.jar example.jar
 
 #对外暴漏的端口号
 EXPOSE 8018
@@ -9,5 +9,5 @@ EXPOSE 8018
 WORKDIR /
 
 #开机启动
-ENTRYPOINT ["sh","-c","java -jar $JAVA_OPTS /snail-job-example.jar $PARAMS"]
+ENTRYPOINT ["sh","-c","java -jar $JAVA_OPTS /example.jar $PARAMS"]
 

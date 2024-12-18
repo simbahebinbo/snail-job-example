@@ -10,10 +10,12 @@
 
 # JDK 支持
 
-| JDK版本 | 对应分支                                                                        |
-|-------|-----------------------------------------------------------------------------|
-| ≥ 17  | [master](https://gitee.com/opensnail/snail-job-demo/tree/master/)           |
-| 8     | [master-jdk8](https://gitee.com/opensnail/snail-job-demo/tree/master-jdk8/) |
+```shell
+$ java -version                                                                                                          ⏎
+java version "21.0.2" 2024-01-16 LTS
+Java(TM) SE Runtime Environment Oracle GraalVM 21.0.2+13.1 (build 21.0.2+13-LTS-jvmci-23.1-b30)
+Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 21.0.2+13.1 (build 21.0.2+13-LTS-jvmci-23.1-b30, mixed mode, sharing)
+```
 
 # 🌸 简介
 
